@@ -1,0 +1,26 @@
+<project name="fedoraRestclient" basedir=".">
+
+    <property name="global.dir" value="${basedir}/../../../"/>
+
+    <!--Contain the normal build tasks, including war-->
+    <import file="${global.dir}/build/build-module.xml"/>
+
+    <dirset id="module.dependencies" dir="${global.dir}/modules/">
+        <include name="repository"/>
+    </dirset>
+
+    <dirset  id="project.libs" dir="${global.dir}/lib">
+        <include name="${jersey.lib}"/>
+        <include name="${jsr311-api.lib}"/>
+    </dirset>
+
+</project>
+
+
+
+
+
+
+
+
+
