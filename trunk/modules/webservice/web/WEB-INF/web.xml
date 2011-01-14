@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+    <display-name>ECM</display-name>
+    <description>Enhanced Content Model functionality</description>
+
+    <context-param>
+        <param-name>dk.statsbiblioteket.doms.ecm.fedora.location</param-name>
+        <param-value>http://localhost:7910/fedora</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>dk.statsbiblioteket.doms.ecm.fedora.connector</param-name>
+        <param-value>dk.statsbiblioteket.doms.ecm.repository.fedoraclient.FedoraClientConnector</param-value>
+    </context-param>
+
+
+    <context-param>
+        <param-name>dk.statsbiblioteket.doms.ecm.pidGenerator.client</param-name>
+        <param-value>dk.statsbiblioteket.doms.ecm.repository.PidGeneratorImpl</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>dk.statsbiblioteket.doms.ecm.pidgenerator.client.wsdllocation</param-name>
+        <param-value>http://localhost:8080/pidgenerator/pidGenerator/?wsdl</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>dk.statsbiblioteket.doms.ecm.connectors.fedora.usercache.lifetime</param-name>
+        <param-value>600000</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>dk.statsbiblioteket.doms.ecm.connectors.fedora.usercache.size</param-name>
+        <param-value>20</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>dk.statsbiblioteket.doms.ecm.connectors.fedora.generalcache.lifetime</param-name>
+        <param-value>600000</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>dk.statsbiblioteket.doms.ecm.connectors.fedora.generalcache.size</param-name>
+        <param-value>20</param-value>
+    </context-param>
+
+
+
+    <listener>
+        <listener-class>
+            dk.statsbiblioteket.doms.webservices.configuration.ConfigContextListener
+        </listener-class>
+    </listener>
+    
+    <filter>
+        <display-name>AuthFilter</display-name>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>dk.statsbiblioteket.doms.webservices.authentication.AuthFilter</filter-class>
+        <init-param>
+            <param-name>Realm name</param-name>
+            <param-value>ECM</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <servlet-name>ECM</servlet-name>
+    </filter-mapping>
+
+
+    <servlet>
+        <servlet-name>ECM</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer
+        </servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value>dk.statsbiblioteket.doms.ecm.webservice</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ECM</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+    <!--This is the surveyable servlet, the one that initialialises the surveyable classes-->
+    <servlet>
+        <servlet-name>WSServletSurveyable</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer
+        </servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value>dk.statsbiblioteket.doms.domsutil.surveyable</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WSServletSurveyable</servlet-name>
+        <url-pattern>/surveyable/*</url-pattern>
+    </servlet-mapping>
+    <context-param>
+        <description>The class that will be exposed for surveillance
+        </description>
+        <param-name>
+            dk.statsbiblioteket.doms.domsutil.surveyable.surveyables
+        </param-name>
+        <param-value>
+            dk.statsbiblioteket.doms.domsutil.surveyable.RunningSurveyable;
+            dk.statsbiblioteket.doms.domsutil.surveillance.logappender.CachingLogRegistry
+        </param-value>
+    </context-param>
+
+    <context-param>
+        <description>The name of the service for surveillance purposes
+        </description>
+        <param-name>
+                dk.statsbiblioteket.doms.surveillance.logappender.LoggerName
+        </param-name>
+        <param-value>
+            DomsECM
+        </param-value>
+    </context-param>
+
+
+
+
+
+    <!--This servlet is used only to load on startup, and configure the logging framework.-->
+    <servlet>
+        <description>The servlet that is loaded on startup, and initializes the logging system</description>
+        <servlet-name>Log4jInitialisation</servlet-name>
+        <servlet-class>dk.statsbiblioteket.doms.webservices.logging.Log4JInitServlet</servlet-class>
+        <init-param>
+            <description>Name of the context param that controls the location of the log4j config file</description>
+            <param-name>
+                dk.statsbiblioteket.doms.webservices.logging.Log4JInitServlet.log4jConfigurationPropertyKey
+            </param-name>
+            <param-value>
+                dk.statsbiblioteket.doms.ecm.log4jconfig
+            </param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <context-param>
+        <description>The location of the log4j config file</description>
+        <param-name>dk.statsbiblioteket.doms.ecm.log4jconfig</param-name>
+        <param-value>WEB-INF/log4jproperties.xml</param-value>
+    </context-param>
+
+
+</web-app>
