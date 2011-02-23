@@ -35,7 +35,7 @@
 
     <groupId>dk.statsbiblioteket.doms.ecm</groupId>
     <artifactId>ecm</artifactId>
-    <version>0.0.15</version>
+    <version>0.0.16-SNAPSHOT</version>
     <name>ECM project</name>
 
     <packaging>pom</packaging>
@@ -140,11 +140,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-
-  <scm>
-    <connection>scm:svn:https://doms.svn.sourceforge.net/svnroot/doms/doms/tags/release-0.0.15</connection>
-    <developerConnection>scm:svn:https://doms.svn.sourceforge.net/svnroot/doms/doms/tags/release-0.0.15</developerConnection>
-    <url>http://doms.svn.sourceforge.net/viewvc/doms/doms/tags/release-0.0.15</url>
-  </scm>
 </project>
