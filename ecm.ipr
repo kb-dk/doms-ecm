@@ -6,7 +6,7 @@
   <component name="ArtifactManager">
     <artifact type="war" name="ecm-service:war">
       <output-path>$PROJECT_DIR$/modules/webservice/target</output-path>
-      <root id="archive" name="ecm-service-0.0.16-SNAPSHOT.war">
+      <root id="archive" name="ecm-service-0.0.16.war">
         <element id="artifact" artifact-name="ecm-service:war exploded" />
       </root>
     </artifact>
@@ -30,17 +30,17 @@
             <element id="library" level="project" name="Maven: com.sun.jersey:jersey-server:1.3" />
             <element id="library" level="project" name="Maven: com.sun.jersey:jersey-core:1.3" />
             <element id="library" level="project" name="Maven: asm:asm:3.1" />
-            <element id="archive" name="ecm-view-0.0.16-SNAPSHOT.jar">
+            <element id="archive" name="ecm-view-0.0.16.jar">
               <element id="module-output" name="ecm-view" />
             </element>
-            <element id="archive" name="ecm-repository-0.0.16-SNAPSHOT.jar">
+            <element id="archive" name="ecm-repository-0.0.16.jar">
               <element id="module-output" name="ecm-repository" />
             </element>
-            <element id="library" level="project" name="Maven: dk.statsbiblioteket.doms.pidgenerator:pidgenerator-interface:0.0.7" />
-            <element id="archive" name="ecm-templates-0.0.16-SNAPSHOT.jar">
+            <element id="library" level="project" name="Maven: dk.statsbiblioteket.doms.pidgenerator:pidgenerator-interface:0.0.8" />
+            <element id="archive" name="ecm-templates-0.0.16.jar">
               <element id="module-output" name="ecm-templates" />
             </element>
-            <element id="archive" name="ecm-fedoraclient-0.0.16-SNAPSHOT.jar">
+            <element id="archive" name="ecm-fedoraclient-0.0.16.jar">
               <element id="module-output" name="ecm-fedoraclient" />
             </element>
             <element id="library" level="project" name="Maven: org.fcrepo:fcrepo-client-admin:3.4.2" />
@@ -157,7 +157,6 @@
             <element id="library" level="project" name="Maven: org.fcrepo:fcrepo-common:3.4.2" />
             <element id="library" level="project" name="Maven: org.fcrepo:fcrepo-generate:3.4.2" />
             <element id="library" level="project" name="Maven: org.fcrepo:sunxacml:melcoe:1.2" />
-            <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.5.10" />
             <element id="library" level="project" name="Maven: org.springframework:spring-beans:2.5.6" />
             <element id="library" level="project" name="Maven: org.springframework:spring-core:2.5.6" />
             <element id="library" level="project" name="Maven: net.java.dev.stax-utils:stax-utils:20060502" />
@@ -165,6 +164,8 @@
             <element id="library" level="project" name="Maven: org.fcrepo:Tidy:1.0" />
             <element id="library" level="project" name="Maven: org.fcrepo:tt-bytecode:1.0" />
             <element id="library" level="project" name="Maven: org.slf4j:jul-to-slf4j:1.5.10" />
+            <element id="library" level="project" name="Maven: ch.qos.logback:logback-classic:0.9.18" />
+            <element id="library" level="project" name="Maven: ch.qos.logback:logback-core:0.9.18" />
             <element id="library" level="project" name="Maven: owlapi:owlapi:3.0.0-patched" />
             <element id="library" level="project" name="Maven: batik:batik-swing:1.6-1" />
             <element id="library" level="project" name="Maven: batik:batik-bridge:1.6-1" />
@@ -1177,15 +1178,15 @@
         <root url="jar://$MAVEN_REPOSITORY$/dk/statsbiblioteket/doms/ecm/ecm-templates/0.0.14-SNAPSHOT/ecm-templates-0.0.14-SNAPSHOT-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: dk.statsbiblioteket.doms.pidgenerator:pidgenerator-interface:0.0.7">
+    <library name="Maven: dk.statsbiblioteket.doms.pidgenerator:pidgenerator-interface:0.0.8">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/dk/statsbiblioteket/doms/pidgenerator/pidgenerator-interface/0.0.7/pidgenerator-interface-0.0.7.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/dk/statsbiblioteket/doms/pidgenerator/pidgenerator-interface/0.0.8/pidgenerator-interface-0.0.8.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/dk/statsbiblioteket/doms/pidgenerator/pidgenerator-interface/0.0.7/pidgenerator-interface-0.0.7-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/dk/statsbiblioteket/doms/pidgenerator/pidgenerator-interface/0.0.8/pidgenerator-interface-0.0.8-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/dk/statsbiblioteket/doms/pidgenerator/pidgenerator-interface/0.0.7/pidgenerator-interface-0.0.7-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/dk/statsbiblioteket/doms/pidgenerator/pidgenerator-interface/0.0.8/pidgenerator-interface-0.0.8-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: dk.statsbiblioteket.sbutil:sbutil:0.5.2">
