@@ -35,15 +35,15 @@
 
     <groupId>dk.statsbiblioteket.doms.ecm</groupId>
     <artifactId>ecm</artifactId>
-    <version>0.0.16-SNAPSHOT</version>
+    <version>0.0.16</version>
     <name>ECM project</name>
 
     <packaging>pom</packaging>
 
     <scm>
-        <connection>scm:svn:https://doms.svn.sourceforge.net/svnroot/doms/${artifactId}/trunk</connection>
-        <developerConnection>scm:svn:https://doms.svn.sourceforge.net/svnroot/doms/${artifactId}/trunk</developerConnection>
-        <url>http://doms.svn.sourceforge.net/viewvc/doms/${artifactId}/trunk</url>
+        <connection>scm:svn:https://doms.svn.sourceforge.net/svnroot/doms/ecm/tags/ecm-0.0.16</connection>
+        <developerConnection>scm:svn:https://doms.svn.sourceforge.net/svnroot/doms/ecm/tags/ecm-0.0.16</developerConnection>
+        <url>http://doms.svn.sourceforge.net/viewvc/doms/ecm/tags/ecm-0.0.16</url>
     </scm>
 
 
@@ -61,7 +61,7 @@
             <dependency>
                 <groupId>dk.statsbiblioteket.doms.pidgenerator</groupId>
                 <artifactId>pidgenerator-interface</artifactId>
-                <version>0.0.7</version>
+                <version>0.0.8</version>
             </dependency>
             <dependency>
                 <groupId>dk.statsbiblioteket.doms.domsutil</groupId>
@@ -84,16 +84,10 @@
                         <groupId>org.slf4j</groupId>
                     </exclusion>
                     <exclusion>
-                        <artifactId>logback-classic</artifactId>
-                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>jcl-over-slf4j</artifactId>
+                        <groupId>org.slf4j</groupId>
                     </exclusion>
-                    <exclusion>
-                        <artifactId>logback-core</artifactId>
-                        <groupId>ch.qos.logback</groupId>
-                    </exclusion>
-
                 </exclusions>
-
             </dependency>
             <dependency>
                 <groupId>org.fcrepo</groupId>
@@ -105,14 +99,9 @@
                         <groupId>org.slf4j</groupId>
                     </exclusion>
                     <exclusion>
-                        <artifactId>logback-classic</artifactId>
-                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>jcl-over-slf4j</artifactId>
+                        <groupId>org.slf4j</groupId>
                     </exclusion>
-                    <exclusion>
-                        <artifactId>logback-core</artifactId>
-                        <groupId>ch.qos.logback</groupId>
-                    </exclusion>
-
                 </exclusions>
             </dependency>
             <dependency>
