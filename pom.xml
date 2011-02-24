@@ -40,6 +40,13 @@
 
     <packaging>pom</packaging>
 
+    <scm>
+        <connection>scm:svn:https://doms.svn.sourceforge.net/svnroot/doms/${artifactId}/trunk</connection>
+        <developerConnection>scm:svn:https://doms.svn.sourceforge.net/svnroot/doms/${artifactId}/trunk</developerConnection>
+        <url>http://doms.svn.sourceforge.net/viewvc/doms/${artifactId}/trunk</url>
+    </scm>
+
+
     <modules>
         <module>modules/fedoraconnectors</module>
         <module>modules/fedoravalidatorhook</module>
