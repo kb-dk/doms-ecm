@@ -47,13 +47,12 @@
     </context-param>
 
 
-
     <listener>
         <listener-class>
             dk.statsbiblioteket.doms.webservices.configuration.ConfigContextListener
         </listener-class>
     </listener>
-    
+
     <filter>
         <display-name>AuthFilter</display-name>
         <filter-name>AuthFilter</filter-name>
@@ -97,6 +96,7 @@
         <servlet-name>WSServletSurveyable</servlet-name>
         <url-pattern>/surveyable/*</url-pattern>
     </servlet-mapping>
+
     <context-param>
         <description>The class that will be exposed for surveillance
         </description>
@@ -113,15 +113,12 @@
         <description>The name of the service for surveillance purposes
         </description>
         <param-name>
-                dk.statsbiblioteket.doms.surveillance.logappender.LoggerName
+            dk.statsbiblioteket.doms.surveillance.logappender.LoggerName
         </param-name>
         <param-value>
             DomsECM
         </param-value>
     </context-param>
-
-
-
 
 
     <!--This servlet is used only to load on startup, and configure the logging framework.-->

@@ -67,7 +67,7 @@ public class FedoraClientConnector
     }
 
 
-    public boolean addRelation(String from, String relation, String to)
+    public boolean addRelation(String from, String relation, String to, String logMessage)
             throws ObjectNotFoundException, FedoraConnectionException,
                    FedoraIllegalContentException, InvalidCredentialsException {
         from = FedoraUtil.ensureURI(from);
@@ -82,12 +82,12 @@ public class FedoraClientConnector
                             = (AuthzException) axisFault.getCause();
                     throw new InvalidCredentialsException(
                             "The supplied credentials were insufficient for the"
-                            + " task at hand",authzException);
+                            + " task at hand", authzException);
                 }
                 if (axisFault.getCause() instanceof LowlevelStorageException) {
                     LowlevelStorageException lowlevelStorageException
                             = (LowlevelStorageException) axisFault.getCause();
-                    throw new ObjectNotFoundException("The object '"+from+"' was not found",axisFault.getCause());
+                    throw new ObjectNotFoundException("The object '" + from + "' was not found", axisFault.getCause());
                 }
 
             }
@@ -105,7 +105,7 @@ public class FedoraClientConnector
                    FedoraIllegalContentException, InvalidCredentialsException {
         from = FedoraUtil.ensureURI(from);
 
-     
+
         try {
             return getAPIM().addRelationship(from,
                                              relation,
@@ -120,12 +120,12 @@ public class FedoraClientConnector
                             = (AuthzException) axisFault.getCause();
                     throw new InvalidCredentialsException(
                             "The supplied credentials were insufficient for the"
-                            + " task at hand",authzException);
+                            + " task at hand", authzException);
                 }
                 if (axisFault.getCause() instanceof LowlevelStorageException) {
                     LowlevelStorageException lowlevelStorageException
                             = (LowlevelStorageException) axisFault.getCause();
-                    throw new ObjectNotFoundException("The object '"+from+"' was not found",axisFault.getCause());
+                    throw new ObjectNotFoundException("The object '" + from + "' was not found", axisFault.getCause());
                 }
             }
             throw new FedoraConnectionException(
@@ -164,12 +164,12 @@ public class FedoraClientConnector
                             = (AuthzException) axisFault.getCause();
                     throw new InvalidCredentialsException(
                             "The supplied credentials were insufficient for the"
-                            + " task at hand",authzException);
+                            + " task at hand", authzException);
                 }
                 if (axisFault.getCause() instanceof LowlevelStorageException) {
                     LowlevelStorageException lowlevelStorageException
                             = (LowlevelStorageException) axisFault.getCause();
-                    throw new ObjectNotFoundException("The object '"+pid+"' was not found",axisFault.getCause());
+                    throw new ObjectNotFoundException("The object '" + pid + "' was not found", axisFault.getCause());
                 }
             }
             throw new FedoraConnectionException(
@@ -202,12 +202,13 @@ public class FedoraClientConnector
                             = (AuthzException) axisFault.getCause();
                     throw new InvalidCredentialsException(
                             "The supplied credentials were insufficient for the"
-                            + " task at hand",authzException);
+                            + " task at hand", authzException);
                 }
                 if (axisFault.getCause() instanceof LowlevelStorageException) {
                     LowlevelStorageException lowlevelStorageException
                             = (LowlevelStorageException) axisFault.getCause();
-                    throw new ObjectNotFoundException("The object '"+pid+"' was not found",lowlevelStorageException);
+                    throw new ObjectNotFoundException("The object '" + pid + "' was not found",
+                                                      lowlevelStorageException);
                 }
 
             }
@@ -322,7 +323,9 @@ public class FedoraClientConnector
         }
 */
 
-        PidList descendants = query("select $object \n" + "from <#ri>\n" + "where \n" + "walk(\n" + "$object <" + Constants.RELATION_EXTENDS_MODEL + "> <" + cmpid + ">\n" + "and\n" + "$object <" + Constants.RELATION_EXTENDS_MODEL + "> $temp\n" + ");");
+        PidList descendants = query("select $object \n" + "from <#ri>\n" + "where \n" + "walk(\n" + "$object <" +
+                                    Constants.RELATION_EXTENDS_MODEL + "> <" + cmpid + ">\n" + "and\n" + "$object <" +
+                                    Constants.RELATION_EXTENDS_MODEL + "> $temp\n" + ");");
         return descendants;
 
     }
@@ -344,7 +347,7 @@ public class FedoraClientConnector
         } catch (ServiceException e) {
             return false;
         } catch (IOException e) {
-            throw new FedoraConnectionException("Fedora exception encountered",e);
+            throw new FedoraConnectionException("Fedora exception encountered", e);
         }
         return true;
     }
@@ -374,12 +377,12 @@ public class FedoraClientConnector
                             = (AuthzException) axisFault.getCause();
                     throw new InvalidCredentialsException(
                             "The supplied credentials were insufficient for the"
-                            + " task at hand",authzException);
+                            + " task at hand", authzException);
                 }
                 if (axisFault.getCause() instanceof LowlevelStorageException) {
                     LowlevelStorageException lowlevelStorageException
                             = (LowlevelStorageException) axisFault.getCause();
-                    throw new ObjectNotFoundException("The object '"+pid+"' was not found",axisFault.getCause());
+                    throw new ObjectNotFoundException("The object '" + pid + "' was not found", axisFault.getCause());
                 }
 
             }
@@ -420,7 +423,7 @@ public class FedoraClientConnector
                             = (AuthzException) axisFault.getCause();
                     throw new InvalidCredentialsException(
                             "The supplied credentials were insufficient for the"
-                            + " task at hand",authzException);
+                            + " task at hand", authzException);
                 }
             }
             throw new FedoraConnectionException(
@@ -454,12 +457,13 @@ public class FedoraClientConnector
                             = (AuthzException) axisFault.getCause();
                     throw new InvalidCredentialsException(
                             "The supplied credentials were insufficient for the"
-                            + " task at hand",authzException);
+                            + " task at hand", authzException);
                 }
                 if (axisFault.getCause() instanceof LowlevelStorageException) {
                     LowlevelStorageException lowlevelStorageException
                             = (LowlevelStorageException) axisFault.getCause();
-                    throw new ObjectNotFoundException("The object '"+pid+"' was not found",lowlevelStorageException);
+                    throw new ObjectNotFoundException("The object '" + pid + "' was not found",
+                                                      lowlevelStorageException);
                 }
 
             }
@@ -502,12 +506,12 @@ public class FedoraClientConnector
                             = (AuthzException) axisFault.getCause();
                     throw new InvalidCredentialsException(
                             "The supplied credentials were insufficient for the"
-                            + " task at hand",authzException);
+                            + " task at hand", authzException);
                 }
                 if (axisFault.getCause() instanceof LowlevelStorageException) {
                     LowlevelStorageException lowlevelStorageException
                             = (LowlevelStorageException) axisFault.getCause();
-                    throw new ObjectNotFoundException("The object '"+pid+"' was not found",axisFault.getCause());
+                    throw new ObjectNotFoundException("The object '" + pid + "' was not found", axisFault.getCause());
                 }
 
             }
@@ -528,8 +532,9 @@ public class FedoraClientConnector
             dsCompositeXml = DocumentUtils.DOCUMENT_BUILDER.parse(new ByteArrayInputStream(
                     buf));
         } catch (SAXException e) {
-            throw new FedoraIllegalContentException("Error parsing datastream '" + datastream + "'  from '" + pid + "' as XML",
-                                                    e);
+            throw new FedoraIllegalContentException(
+                    "Error parsing datastream '" + datastream + "'  from '" + pid + "' as XML",
+                    e);
         } catch (IOException e) {
             throw new Error("IOTrouble reading from byte array stream, " + "this should never happen",
                             e);
@@ -596,22 +601,22 @@ public class FedoraClientConnector
         Map<String, String> map = new HashMap<String, String>();
         map.put("lang", "itql");
         map.put("query", query);
-        map.put("stream","on");
+        map.put("stream", "on");
         map.put("flush", "true");
 
         final TupleIterator tupleIterator;
         try {
             tupleIterator = getFedoraClient().getTuples(map);
         } catch (IOException e) {
-            if (e.getMessage().startsWith("Request failed [401 Unauthorized]")){
+            if (e.getMessage().startsWith("Request failed [401 Unauthorized]")) {
                 throw new FedoraConnectionException(
-                    "IO exception when communication with fedora",
-                    e);
+                        "IO exception when communication with fedora",
+                        e);
                 //TODO here put proper error because the credentials was not valid
-            } else{
-            throw new FedoraConnectionException(
-                    "IO exception when communication with fedora",
-                    e);
+            } else {
+                throw new FedoraConnectionException(
+                        "IO exception when communication with fedora",
+                        e);
             }
         }
 
@@ -636,8 +641,7 @@ public class FedoraClientConnector
      * initialised. Otherwise, the existing client is reused.
      *
      * @return The fedora client instance.
-     * @throws FedoraConnectionException
-     *          on trouble connectng to Fedora.
+     * @throws FedoraConnectionException on trouble connectng to Fedora.
      */
     private synchronized FedoraClient getFedoraClient()
             throws FedoraConnectionException {
@@ -669,12 +673,11 @@ public class FedoraClientConnector
      * Get the API-M interface to Fedora.
      *
      * @return The API-M interface to Fedora.
-     * @throws FedoraConnectionException
-     *          on trouble connecting to Fedora.
+     * @throws FedoraConnectionException on trouble connecting to Fedora.
      */
     private FedoraAPIM getAPIM() throws FedoraConnectionException {
         try {
-            if (apiM == null){
+            if (apiM == null) {
                 apiM = getFedoraClient().getAPIM();
             }
             return apiM;
@@ -692,13 +695,12 @@ public class FedoraClientConnector
      * Get the API-A interface to Fedora.
      *
      * @return The API-A interface to Fedora.
-     * @throws FedoraConnectionException
-     *          on trouble connecting to Fedora.
+     * @throws FedoraConnectionException on trouble connecting to Fedora.
      */
     private FedoraAPIA getAPIA() throws FedoraConnectionException {
 
         try {
-            if (apiA == null){
+            if (apiA == null) {
                 apiA = getFedoraClient().getAPIA();
             }
             return apiA;

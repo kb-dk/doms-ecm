@@ -20,7 +20,7 @@ import java.util.List;
  * "info:fedora/" prefix. The implementations of this interface must be guaranteed
  * to be agnostic towards this. Ie. they will understand both forms. They are
  * free to choose which of these forms they will for returned pids, but this
- * should be noted in the javadoc.  
+ * should be noted in the javadoc.
  *
  * @see #initialise(FedoraUserToken)
  */
@@ -29,9 +29,10 @@ public interface FedoraConnector {
 
     /**
      * This is the pseudo constructor. This method must be called before
-     * anything else is attempted. 
+     * anything else is attempted.
+     *
      * @param token A token contain the login credentials and the server url of
-     * the fedora instance
+     *              the fedora instance
      */
     public void initialise(FedoraUserToken token);
 
@@ -40,6 +41,7 @@ public interface FedoraConnector {
 
     /**
      * Checks if the object with the given pid exists in the repository
+     *
      * @param pid the pid of the object
      * @return true if the object exists
      * @throws IllegalStateException if the connector have not been initialised
@@ -51,6 +53,7 @@ public interface FedoraConnector {
 
     /**
      * Checks if the object with the given pid exists and is a data object
+     *
      * @param pid the pid of the object
      * @return true if the object exits and is a data object
      * @throws IllegalStateException if the connector have not been initialised
@@ -62,6 +65,7 @@ public interface FedoraConnector {
 
     /**
      * Checks if the object with the given pid exists and is a template object
+     *
      * @param pid the pid of the object
      * @return true if the object exits and is a template object
      * @throws IllegalStateException if the connector have not been initialised
@@ -75,7 +79,8 @@ public interface FedoraConnector {
 
     /**
      * Checks if the object with the given pid exists and is a content model
-     *  object
+     * object
+     *
      * @param pid the pid of the object
      * @return true if the object exits and is a content model object
      * @throws IllegalStateException if the connector have not been initialised
@@ -87,7 +92,7 @@ public interface FedoraConnector {
 
     /**
      * Not public.
-     *
+     * <p/>
      * Queries must start with
      * "select $object
      * from <#ri>
@@ -95,11 +100,11 @@ public interface FedoraConnector {
      *
      * @param query the query to execute.
      * @return a list of objects
-     * @throws FedoraConnectionException if something went wrong with the
-     * fedora connection
+     * @throws FedoraConnectionException     if something went wrong with the
+     *                                       fedora connection
      * @throws FedoraIllegalContentException if the fedora reply could not be
-     * parsed
-     * @throws IllegalStateException if the connector have not been initialised
+     *                                       parsed
+     * @throws IllegalStateException         if the connector have not been initialised
      */
     public PidList query(String query)
             throws IllegalStateException,
@@ -109,19 +114,20 @@ public interface FedoraConnector {
 
     /**
      * Adds a relation to the given object.
-     * @param from the object to add the relation to
-     * @param relation the name of the relation
-     * @param to the target of the relation
+     *
+     * @param from       the object to add the relation to
+     * @param relation   the name of the relation
+     * @param to         the target of the relation
+     * @param logMessage
      * @return true, if the relation was added. False, if the relation is
-     * already there.
-     * @throws FedoraConnectionException
-     * if there is a problem with the communication with Fedora
-     * @throws ObjectNotFoundException if the object
-     * is not found in the repository
-     * @throws IllegalStateException If initialise have not been called.
+     *         already there.
+     * @throws FedoraConnectionException if there is a problem with the communication with Fedora
+     * @throws ObjectNotFoundException   if the object
+     *                                   is not found in the repository
+     * @throws IllegalStateException     If initialise have not been called.
      * @see #initialise(FedoraUserToken)
      */
-    public boolean addRelation(String from, String relation, String to)
+    public boolean addRelation(String from, String relation, String to, String logMessage)
             throws IllegalStateException, ObjectNotFoundException,
                    FedoraConnectionException,
                    FedoraIllegalContentException,
@@ -129,19 +135,18 @@ public interface FedoraConnector {
 
     /**
      * Add a literal value as a relation
-     * @param from the object to add the relation to
+     *
+     * @param from     the object to add the relation to
      * @param relation the name of the literal
-     * @param value the value
+     * @param value    the value
      * @param datatype the datatype of the literal
-     * //TODO what to put here
+     *                 //TODO what to put here
      * @return true, if added
-     * @throws FedoraConnectionException
-     * if there is a problem with the communication with Fedora
-     * @throws ObjectNotFoundException if the object
-     * is not found in the repository
-     * @throws IllegalStateException If initialise have not been called.
+     * @throws FedoraConnectionException if there is a problem with the communication with Fedora
+     * @throws ObjectNotFoundException   if the object
+     *                                   is not found in the repository
+     * @throws IllegalStateException     If initialise have not been called.
      * @see #initialise(FedoraUserToken)
-
      */
     public boolean addLiteralRelation(String from,
                                       String relation,
@@ -154,17 +159,16 @@ public interface FedoraConnector {
 
     /**
      * Gets the entire object as a String
+     *
      * @param pid the pid of the object
      * @return the object as a String
-     * @throws FedoraConnectionException
-     * if there is a problem with the communication with Fedora
-     * @throws ObjectNotFoundException if the object
-     * is not found in the repository
+     * @throws FedoraConnectionException     if there is a problem with the communication with Fedora
+     * @throws ObjectNotFoundException       if the object
+     *                                       is not found in the repository
      * @throws FedoraIllegalContentException if
-     * the object cannot be parsed to a document
-     * @throws IllegalStateException If initialise have not been called.
+     *                                       the object cannot be parsed to a document
+     * @throws IllegalStateException         If initialise have not been called.
      * @see #initialise(FedoraUserToken)
-
      */
     public String getObjectXml(String pid)
             throws IllegalStateException,
@@ -176,17 +180,16 @@ public interface FedoraConnector {
     /**
      * //TODO this method should not be public
      * Ingest the object into the repository
-     * @param newobject the Document to ingest
+     *
+     * @param newobject  the Document to ingest
      * @param logmessage the message that should appear in the audit trail about
-     * who and why the object was created
+     *                   who and why the object was created
      * @return The pid of the new object
-     * @throws FedoraConnectionException
-     * if there is a problem with the communication with Fedora
+     * @throws FedoraConnectionException     if there is a problem with the communication with Fedora
      * @throws FedoraIllegalContentException if
-     * the object cannot be parsed to a document
-     * @throws IllegalStateException If initialise have not been called.
+     *                                       the object cannot be parsed to a document
+     * @throws IllegalStateException         If initialise have not been called.
      * @see #initialise(FedoraUserToken)
-
      */
     public String ingestDocument(Document newobject, String logmessage)
             throws IllegalStateException,
@@ -195,15 +198,14 @@ public interface FedoraConnector {
 
     /**
      * Get all relations in the object
+     *
      * @param pid the pid of the object
      * @return List of relations
-     * @throws FedoraConnectionException
-     * if there is a problem with the communication with Fedora
-     * @throws ObjectNotFoundException if the object
-     * is not found in the repository
-     * @throws IllegalStateException If initialise have not been called.
+     * @throws FedoraConnectionException if there is a problem with the communication with Fedora
+     * @throws ObjectNotFoundException   if the object
+     *                                   is not found in the repository
+     * @throws IllegalStateException     If initialise have not been called.
      * @see #initialise(FedoraUserToken)
-
      */
     public List<Relation> getRelations(String pid)
             throws IllegalStateException, FedoraConnectionException,
@@ -213,14 +215,14 @@ public interface FedoraConnector {
 
     /**
      * Get all relations in the object, with the given name
-     * @param pid the pid of the object
+     *
+     * @param pid      the pid of the object
      * @param relation the name of the relation
      * @return List of relations
-     * @throws FedoraConnectionException
-     * if there is a problem with the communication with Fedora
-     * @throws ObjectNotFoundException if the object
-     * is not found in the repository
-     * @throws IllegalStateException If initialise have not been called.
+     * @throws FedoraConnectionException if there is a problem with the communication with Fedora
+     * @throws ObjectNotFoundException   if the object
+     *                                   is not found in the repository
+     * @throws IllegalStateException     If initialise have not been called.
      * @see #initialise(FedoraUserToken)
      */
     public List<Relation> getRelations(String pid, String relation)
@@ -231,18 +233,18 @@ public interface FedoraConnector {
 
     /**
      * Get the datastream as a Document
-     * @param pid the pid of the object
+     *
+     * @param pid  the pid of the object
      * @param dsid the id of the datastream
      * @return Datastream as Document
-     * @throws FedoraConnectionException
-     * if there is a problem with the communication with Fedora
-     * @throws ObjectNotFoundException if the object
-     * is not found in the repository
-     * @throws DatastreamNotFoundException if the
-     * object is found, but does not have a datastream with this id
+     * @throws FedoraConnectionException     if there is a problem with the communication with Fedora
+     * @throws ObjectNotFoundException       if the object
+     *                                       is not found in the repository
+     * @throws DatastreamNotFoundException   if the
+     *                                       object is found, but does not have a datastream with this id
      * @throws FedoraIllegalContentException if
-     * the datastream cannot be parsed to a document
-     * @throws IllegalStateException If initialise have not been called.
+     *                                       the datastream cannot be parsed to a document
+     * @throws IllegalStateException         If initialise have not been called.
      * @see #initialise(FedoraUserToken)
      */
     public Document getDatastream(String pid, String dsid)
@@ -258,13 +260,13 @@ public interface FedoraConnector {
      * first content model in the list is the most specific content model for
      * the object.<br>
      * The list is achieved by going through the inheritance tree breadth-first.
+     *
      * @param pid the pid of the object
      * @return List of pids of content models
-     * @throws FedoraConnectionException
-     * if there is a problem with the communication with Fedora
-     * @throws ObjectNotFoundException if the object
-     * is not found in the repository
-     * @throws IllegalStateException If initialise have not been called.
+     * @throws FedoraConnectionException if there is a problem with the communication with Fedora
+     * @throws ObjectNotFoundException   if the object
+     *                                   is not found in the repository
+     * @throws IllegalStateException     If initialise have not been called.
      * @see #initialise(FedoraUserToken)
      */
     public PidList getContentModels(String pid)
@@ -277,19 +279,19 @@ public interface FedoraConnector {
     /**
      * To implement inheritance, modify this method. All ECM functions use this
      * method when resolving inheritance.
-     *
+     * <p/>
      * This method shall return the entire list of descendants of the specified
      * content model, not just the first
      * level. It will only be called once by an application that want the
      * inheritance
+     *
      * @param cmpid the content model pid
      * @return List of content models
-     * if there is a problem with the communication with Fedora
-     * @throws FedoraConnectionException
-     * if there is a problem with the communication with Fedora
-     * @throws ObjectNotFoundException if the object
-     * is not found in the repository
-     * @throws IllegalStateException If initialise have not been called.
+     *         if there is a problem with the communication with Fedora
+     * @throws FedoraConnectionException if there is a problem with the communication with Fedora
+     * @throws ObjectNotFoundException   if the object
+     *                                   is not found in the repository
+     * @throws IllegalStateException     If initialise have not been called.
      * @see #initialise(FedoraUserToken)
      */
     public PidList getInheritingContentModels(String cmpid)
@@ -299,13 +301,13 @@ public interface FedoraConnector {
 
     /**
      * Get the list of datastreams in the object
+     *
      * @param pid the pid of the object
      * @return List of IDs of the datastreams in the object
-     * @throws FedoraConnectionException
-     * if there is a problem with the communication with Fedora
-     * @throws ObjectNotFoundException if the object
-     * is not found in the repository
-     * @throws IllegalStateException If initialise have not been called.
+     * @throws FedoraConnectionException if there is a problem with the communication with Fedora
+     * @throws ObjectNotFoundException   if the object
+     *                                   is not found in the repository
+     * @throws IllegalStateException     If initialise have not been called.
      * @see #initialise(FedoraUserToken)
      */
     public List<String> listDatastreams(String pid)
@@ -313,8 +315,6 @@ public interface FedoraConnector {
                    ObjectNotFoundException,
                    FedoraIllegalContentException,
                    InvalidCredentialsException;
-
-
 
 
     //TODO should this be here
@@ -330,6 +330,7 @@ public interface FedoraConnector {
     /**
      * Test if the credentials given in the constructor is sufficient for the
      * connector to work
+     *
      * @return true if the credentials are good
      */
     public boolean authenticate()
@@ -342,13 +343,14 @@ public interface FedoraConnector {
      */
     public static class Relation {
 
-        private String from,to,relation;
+        private String from, to, relation;
 
         /**
          * Create a new Relation object. This constructor should not be used
          * except in classes implementing FedoraConnector
-         * @param from The object, ie the object wherein the relation originates
-         * @param to the Subject, ie the target of the relation
+         *
+         * @param from     The object, ie the object wherein the relation originates
+         * @param to       the Subject, ie the target of the relation
          * @param relation the full name of the relation
          */
         public Relation(String from, String to, String relation) {
@@ -360,6 +362,7 @@ public interface FedoraConnector {
         /**
          * From is the pid of the object that holds the relation.
          * Called object in rdf terminology
+         *
          * @return from
          */
         public String getFrom() {
@@ -379,6 +382,7 @@ public interface FedoraConnector {
         /**
          * The fully qualified name of the relation. Called Property in
          * rdf terminology
+         *
          * @return the relation
          */
         public String getRelation() {
@@ -392,7 +396,7 @@ public interface FedoraConnector {
                 return relation1.getTo().equals(this.getTo())
                        && relation1.getFrom().equals(this.getFrom())
                        && relation1.getRelation().equals(this.getRelation());
-            } else{
+            } else {
                 return false;
             }
         }

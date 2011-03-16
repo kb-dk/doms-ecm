@@ -1,15 +1,15 @@
 package dk.statsbiblioteket.doms.ecm.repository;
 
-import junit.framework.TestCase;
 import dk.statsbiblioteket.doms.ecm.repository.exceptions.DatastreamNotFoundException;
 import dk.statsbiblioteket.doms.ecm.repository.exceptions.FedoraConnectionException;
 import dk.statsbiblioteket.doms.ecm.repository.exceptions.FedoraIllegalContentException;
 import dk.statsbiblioteket.doms.ecm.repository.exceptions.ObjectNotFoundException;
+import dk.statsbiblioteket.doms.ecm.repository.test.FedoraTestConnector;
+import dk.statsbiblioteket.doms.ecm.repository.test.TestObject;
 import dk.statsbiblioteket.doms.ecm.repository.utils.Constants;
 import dk.statsbiblioteket.doms.ecm.repository.utils.DocumentUtils;
 import dk.statsbiblioteket.doms.ecm.repository.utils.FedoraUtil;
-import dk.statsbiblioteket.doms.ecm.repository.test.FedoraTestConnector;
-import dk.statsbiblioteket.doms.ecm.repository.test.TestObject;
+import junit.framework.TestCase;
 import org.w3c.dom.Document;
 
 import javax.xml.transform.TransformerException;
@@ -76,7 +76,8 @@ public class FedoraTestImplTest
         assertTrue("found spurious object", !connector.isDataObject("shjkfsd"));
     }
 
-    public void testIsTemplate() throws ObjectNotFoundException, FedoraIllegalContentException, FedoraConnectionException {
+    public void testIsTemplate()
+            throws ObjectNotFoundException, FedoraIllegalContentException, FedoraConnectionException {
         assertEquals("data object not found", true, connector.isTemplate(o1.getPid()));
         assertTrue("content model not found",
                    !connector.isTemplate(cm1.getPid()));
@@ -106,10 +107,11 @@ public class FedoraTestImplTest
 
         connector.addRelation(o1.getPid(),
                               Constants.NAMESPACE_RELATIONS + "TestRelation",
-                              o2.getPid());
+                              o2.getPid(), logMessage);
 
         List<FedoraConnector.Relation> foundrel = connector.getRelations(o1.getPid(),
-                                                                         Constants.NAMESPACE_RELATIONS + "TestRelation");
+                                                                         Constants.NAMESPACE_RELATIONS +
+                                                                         "TestRelation");
         assertTrue("Found wrong number of relations", foundrel.size() == 1);
         assertEquals("Found relation wrong target",
                      o2.getPid(),
@@ -124,9 +126,10 @@ public class FedoraTestImplTest
 
         connector.addRelation(o1.getPid(),
                               Constants.NAMESPACE_RELATIONS + "TestRelation",
-                              FedoraUtil.ensureURI(o2.getPid()));
+                              FedoraUtil.ensureURI(o2.getPid()), logMessage);
         List<FedoraConnector.Relation> foundrel = connector.getRelations(o1.getPid(),
-                                                                         Constants.NAMESPACE_RELATIONS + "TestRelation");
+                                                                         Constants.NAMESPACE_RELATIONS +
+                                                                         "TestRelation");
         assertTrue("Found wrong number of relations", foundrel.size() == 1);
         assertEquals("Found relation wrong target",
                      o2.getPid(),
@@ -166,8 +169,12 @@ public class FedoraTestImplTest
 
     public void testDatastreams()
             throws ObjectNotFoundException, FedoraConnectionException,
-            FedoraIllegalContentException, DatastreamNotFoundException, TransformerException {
-        String defaultds = "<oai_dc:dc " + "xmlns:oai_dc=\"http://www.openarchives.org/OAI/2.0/oai_dc/\" " + "xmlns:dc=\"http://purl.org/dc/elements/1.1/\"" + ">\n" + "<dc:title>Sample object</dc:title>\n" + "<dc:description>This describes the object</dc:description>\n" + "<dc:creator>Edwin Shin</dc:creator>\n" + "</oai_dc:dc>";
+                   FedoraIllegalContentException, DatastreamNotFoundException, TransformerException {
+        String defaultds = "<oai_dc:dc " + "xmlns:oai_dc=\"http://www.openarchives.org/OAI/2.0/oai_dc/\" " +
+                           "xmlns:dc=\"http://purl.org/dc/elements/1.1/\"" + ">\n" +
+                           "<dc:title>Sample object</dc:title>\n" +
+                           "<dc:description>This describes the object</dc:description>\n" +
+                           "<dc:creator>Edwin Shin</dc:creator>\n" + "</oai_dc:dc>";
 
 
         o1.put("DC", defaultds);
