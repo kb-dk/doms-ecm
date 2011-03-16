@@ -8,8 +8,8 @@ import dk.statsbiblioteket.doms.ecm.repository.utils.DocumentUtils;
 import dk.statsbiblioteket.doms.ecm.repository.utils.FedoraUtil;
 import dk.statsbiblioteket.doms.ecm.services.templates.TemplateSubsystem;
 import dk.statsbiblioteket.doms.ecm.services.view.ViewSubsystem;
-import dk.statsbiblioteket.doms.webservices.configuration.ConfigCollection;
 import dk.statsbiblioteket.doms.webservices.authentication.Credentials;
+import dk.statsbiblioteket.doms.webservices.configuration.ConfigCollection;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
@@ -22,10 +22,24 @@ import javax.xml.transform.TransformerException;
 import java.io.StringWriter;
 import java.util.List;
 
-                    
+
 /**
  * This is the Class serving as entry point for the webservice api for ECM. This
  * class contain the JAX-RS annotations to make a REST interface.
+ * <p/>
+ * http://naiad:7880/ecm/findTemplatesFor/doms:ContentModel_Program
+ * <p/>
+ * http://naiad:7880/
+ * <p/>
+ * ecm
+ * <p/>
+ * /
+ * <p/>
+ * /
+ * <p/>
+ * findTemplatesFor/
+ * <p/>
+ * doms:ContentModel_Program
  */
 @Path("/")
 public class Webservice {
@@ -76,8 +90,10 @@ public class Webservice {
             return;
         }
 */
-        String fedoraserverurl = ConfigCollection.getProperties().getProperty("dk.statsbiblioteket.doms.ecm.fedora.location");
-        String fedoraconnectorclassstring = ConfigCollection.getProperties().getProperty("dk.statsbiblioteket.doms.ecm.fedora.connector");
+        String fedoraserverurl =
+                ConfigCollection.getProperties().getProperty("dk.statsbiblioteket.doms.ecm.fedora.location");
+        String fedoraconnectorclassstring =
+                ConfigCollection.getProperties().getProperty("dk.statsbiblioteket.doms.ecm.fedora.connector");
         Credentials creds = null;
         creds = (Credentials) request.getAttribute("Credentials");
         if (creds == null) {
@@ -90,7 +106,8 @@ public class Webservice {
                 try {
                     fedoraConnector = (FedoraConnector) fedoraconnectorclass.newInstance();
                     fedoraConnector = new CachingConnector(fedoraConnector);
-                    FedoraUserToken token = new FedoraUserToken(fedoraserverurl, creds.getUsername(), creds.getPassword());
+                    FedoraUserToken token =
+                            new FedoraUserToken(fedoraserverurl, creds.getUsername(), creds.getPassword());
                     fedoraConnector.initialise(token);
                 } catch (InstantiationException e) {//TODO
                     throw new InitialisationException("Initialise failed", e);
@@ -110,9 +127,11 @@ public class Webservice {
     @Path("mark/{objectpid}/asTemplateFor/{cmpid}")
     public void markObjectAsTemplate(
             @PathParam("objectpid") String objpid,
-            @PathParam("cmpid") String cmpid) throws EcmException {
+            @PathParam("cmpid") String cmpid,
+            @QueryParam("logMessage") String logMessage
+    ) throws EcmException {
         initialise();
-        temps.markObjectAsTemplate(objpid, cmpid, fedoraConnector);
+        temps.markObjectAsTemplate(objpid, cmpid, logMessage, fedoraConnector);
     }
 
     @GET
@@ -130,9 +149,10 @@ public class Webservice {
     @Produces("text/plain")
     public String cloneTemplate(
             @PathParam("templatepid") String templatepid,
-            @QueryParam("oldID") List<String> oldIDs) throws EcmException {
+            @QueryParam("oldID") List<String> oldIDs,
+            @QueryParam("logMessage") String logMessage) throws EcmException {
         initialise();
-        return temps.cloneTemplate(templatepid, oldIDs, fedoraConnector, pidGenerator);
+        return temps.cloneTemplate(templatepid, oldIDs, logMessage, fedoraConnector, pidGenerator);
     }
 
 
@@ -222,7 +242,8 @@ public class Webservice {
             throws EcmException {
         initialise();
 
-        return new PidList(view.getEntryContentModelsForObjectForViewAngle(FedoraUtil.ensurePID(objpid), viewAngle, fedoraConnector));
+        return new PidList(view.getEntryContentModelsForObjectForViewAngle(FedoraUtil.ensurePID(objpid), viewAngle,
+                                                                           fedoraConnector));
     }
 
     /*@GET
