@@ -35,15 +35,15 @@
 
     <groupId>dk.statsbiblioteket.doms.ecm</groupId>
     <artifactId>ecm</artifactId>
-    <version>0.0.17-SNAPSHOT</version>
+    <version>0.0.17</version>
     <name>ECM project</name>
 
     <packaging>pom</packaging>
 
     <scm>
-        <connection>scm:svn:https://doms.svn.sourceforge.net/svnroot/doms/ecm/trunk</connection>
-        <developerConnection>scm:svn:https://doms.svn.sourceforge.net/svnroot/doms/ecm/trunk</developerConnection>
-        <url>http://doms.svn.sourceforge.net/viewvc/doms/ecm/trunk</url>
+        <connection>scm:svn:https://doms.svn.sourceforge.net/svnroot/doms/ecm/tags/ecm-0.0.17</connection>
+        <developerConnection>scm:svn:https://doms.svn.sourceforge.net/svnroot/doms/ecm/tags/ecm-0.0.17</developerConnection>
+        <url>http://doms.svn.sourceforge.net/viewvc/doms/ecm/tags/ecm-0.0.17</url>
     </scm>
 
 
