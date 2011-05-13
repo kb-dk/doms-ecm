@@ -38,8 +38,8 @@ public class TemplateSubsystem {
                                                 + "foxml:xmlContent/rdf:RDF/"
                                                 + "rdf:Description/doms:isTemplateFor";
     private static final String DATASTREAM_AUDIT = "/foxml:digitalObject/foxml:datastream[@ID='AUDIT']";
-    private static final String DATASTREAM_NEWEST = "/foxml:digitalObject/foxml:datastream/"
-                                                    + "foxml:datastreamVersion[position()=last()]";
+    private static final String DATASTREAM_NODES = "/foxml:digitalObject/foxml:datastream";
+
     private static final String DATASTREAM_CREATED = "/foxml:digitalObject/foxml:datastream/foxml:datastreamVersion";
     private static final String OBJECTPROPERTY_CREATED =
             "/foxml:digitalObject/foxml:objectProperties/foxml:property[@NAME='info:fedora/fedora-system:def/model#createdDate']";
@@ -149,6 +149,7 @@ public class TemplateSubsystem {
         String contents = fedoraConnector.getObjectXml(templatepid);
         Document document = DOM.stringToDOM(contents, true);
 
+        document.normalize();
 
         String newPid = pidGenerator.generateNextAvailablePID("clone_");
         LOG.debug("Generated new pid '" + newPid + "'");
@@ -374,21 +375,20 @@ public class TemplateSubsystem {
                                                         XPathExpressionException {
         NodeList relationNodes;
 
-        relationNodes = XpathUtils.xpathQuery(
-                doc, DATASTREAM_NEWEST);
+        NodeList datastreamNodes = XpathUtils.xpathQuery(
+                doc, DATASTREAM_NODES);
 
-        Node node = relationNodes.item(0);
-        Node datastreamnode = node.getParentNode();
-
-        //Remove all of the datastream node children
-        while (datastreamnode.getFirstChild() != null) {
-            datastreamnode.removeChild(
-                    datastreamnode.getFirstChild());
+        for (int i = 0; i < datastreamNodes.getLength(); i++) {
+            Node datastreamNode = datastreamNodes.item(i);
+            Node newest = datastreamNode.getLastChild();
+            while (newest != null && newest.getNodeType() != Node.ELEMENT_NODE) {
+                newest = newest.getPreviousSibling();
+            }
+            while (datastreamNode.hasChildNodes()) {
+                datastreamNode.removeChild(datastreamNode.getFirstChild());
+            }
+            datastreamNode.appendChild(newest);
         }
-
-        datastreamnode.appendChild(node);
-
-
     }
 
     /**
