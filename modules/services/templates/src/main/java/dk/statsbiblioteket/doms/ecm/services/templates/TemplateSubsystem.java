@@ -149,7 +149,7 @@ public class TemplateSubsystem {
         String contents = fedoraConnector.getObjectXml(templatepid);
         Document document = DOM.stringToDOM(contents, true);
 
-        document.normalize();
+        //document.normalize();
 
         String newPid = pidGenerator.generateNextAvailablePID("clone_");
         LOG.debug("Generated new pid '" + newPid + "'");
