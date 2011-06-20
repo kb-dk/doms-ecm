@@ -16,7 +16,7 @@ import java.util.List;
  * Time: 4:54:26 PM
  * To change this template use File | Settings | File Templates.
  */
-public class CachingConnector implements FedoraConnector{
+public class CachingConnector implements FedoraConnector {
 
     private FedoraConnector connector;
 
@@ -24,18 +24,18 @@ public class CachingConnector implements FedoraConnector{
      * The static contentmodel caches. These should not be protected, so we do
      * not care about specific user creds here
      */
-    private static TimeSensitiveCache<String,PidList> inheritedContentModels;
+    private static TimeSensitiveCache<String, PidList> inheritedContentModels;
 
-    private static TimeSensitiveCache<String,PidList> inheritingContentModels;
+    private static TimeSensitiveCache<String, PidList> inheritingContentModels;
 
-    private static TimeSensitiveCache<String,PidList> contentModels;
+    private static TimeSensitiveCache<String, PidList> contentModels;
 
 
     /**
      * This is the blob of user specific caches. Note that this is itself a cache
      * so it will be garbage collected
      */
-    private static TimeSensitiveCache<FedoraUserToken,Caches> userspecificCaches;
+    private static TimeSensitiveCache<FedoraUserToken, Caches> userspecificCaches;
 
 
     /**
@@ -44,9 +44,8 @@ public class CachingConnector implements FedoraConnector{
     private Caches myCaches;
 
 
-
     public CachingConnector(FedoraConnector connector) {
-        synchronized (CachingConnector.class){
+        synchronized (CachingConnector.class) {
             long lifetime
                     = Long.parseLong(ConfigCollection.getProperties().getProperty(
                     "dk.statsbiblioteket.doms.ecm.connectors.fedora.generalcache.lifetime",
@@ -57,17 +56,17 @@ public class CachingConnector implements FedoraConnector{
                     "" + 20));
 
 
-            if (inheritedContentModels == null){
-                inheritedContentModels = new TimeSensitiveCache<String,PidList>(lifetime,true,size);
+            if (inheritedContentModels == null) {
+                inheritedContentModels = new TimeSensitiveCache<String, PidList>(lifetime, true, size);
             }
-            if (inheritingContentModels == null){
-                inheritingContentModels = new TimeSensitiveCache<String,PidList>(lifetime,true,size);
+            if (inheritingContentModels == null) {
+                inheritingContentModels = new TimeSensitiveCache<String, PidList>(lifetime, true, size);
             }
-            if (contentModels == null){
-                contentModels = new TimeSensitiveCache<String,PidList>(lifetime,true,size*2);
+            if (contentModels == null) {
+                contentModels = new TimeSensitiveCache<String, PidList>(lifetime, true, size * 2);
             }
-            if (userspecificCaches == null){
-                userspecificCaches = new TimeSensitiveCache<FedoraUserToken,Caches>(lifetime,true,size);
+            if (userspecificCaches == null) {
+                userspecificCaches = new TimeSensitiveCache<FedoraUserToken, Caches>(lifetime, true, size);
             }
 
 
@@ -78,7 +77,7 @@ public class CachingConnector implements FedoraConnector{
     public void initialise(FedoraUserToken token) {
         connector.initialise(token);
         myCaches = userspecificCaches.get(token);
-        if (myCaches == null){
+        if (myCaches == null) {
             myCaches = new Caches();
             userspecificCaches.put(token, myCaches);
         }
@@ -126,15 +125,15 @@ public class CachingConnector implements FedoraConnector{
         return connector.query(query);
     }
 
-    public boolean addRelation(String from, String relation, String to) throws
-                                                                        IllegalStateException,
-                                                                        ObjectNotFoundException,
-                                                                        FedoraConnectionException,
-                                                                        FedoraIllegalContentException,
-                                                                        InvalidCredentialsException {
+    public boolean addRelation(String from, String relation, String to, String logMessage) throws
+                                                                                           IllegalStateException,
+                                                                                           ObjectNotFoundException,
+                                                                                           FedoraConnectionException,
+                                                                                           FedoraIllegalContentException,
+                                                                                           InvalidCredentialsException {
 
         myCaches.removeRelations(FedoraUtil.ensurePID(from));
-        return connector.addRelation(from, relation, to);
+        return connector.addRelation(from, relation, to, logMessage);
     }
 
     public boolean addLiteralRelation(String from,
@@ -157,11 +156,11 @@ public class CachingConnector implements FedoraConnector{
                                            InvalidCredentialsException {
         pid = FedoraUtil.ensurePID(pid);
         String doc = myCaches.getObjectXML(pid);
-        if (doc != null){
+        if (doc != null) {
             return doc;
         }
         doc = connector.getObjectXml(pid);
-        myCaches.storeObjectXML(pid,doc);
+        myCaches.storeObjectXML(pid, doc);
         return doc;
     }
 
@@ -181,11 +180,11 @@ public class CachingConnector implements FedoraConnector{
                                                    InvalidCredentialsException {
         pid = FedoraUtil.ensurePID(pid);
         List<Relation> relations = myCaches.getRelations(pid);
-        if (relations != null){
+        if (relations != null) {
             return relations;
         }
         relations = connector.getRelations(pid);
-        myCaches.storeRelations(pid,relations);
+        myCaches.storeRelations(pid, relations);
         return relations;
     }
 
@@ -199,7 +198,7 @@ public class CachingConnector implements FedoraConnector{
         List<Relation> relations = getRelations(pid);
         List<Relation> result = new ArrayList<Relation>();
         for (Relation relation1 : relations) {
-            if (relation1.getRelation().equals(relation)){
+            if (relation1.getRelation().equals(relation)) {
                 result.add(relation1);
             }
         }
@@ -214,11 +213,11 @@ public class CachingConnector implements FedoraConnector{
                                                            ObjectNotFoundException,
                                                            InvalidCredentialsException {
         Document doc = myCaches.getDatastreamContents(pid, dsid);
-        if (doc != null){
+        if (doc != null) {
             return doc;
         }
-        doc =  connector.getDatastream(pid, dsid);
-        myCaches.storeDatastreamContents(pid,dsid,doc);
+        doc = connector.getDatastream(pid, dsid);
+        myCaches.storeDatastreamContents(pid, dsid, doc);
         return doc;
     }
 
@@ -230,12 +229,12 @@ public class CachingConnector implements FedoraConnector{
 
                                                 InvalidCredentialsException {
         pid = FedoraUtil.ensureURI(pid);
-        PidList models =  contentModels.get(pid);
-        if (models != null){
+        PidList models = contentModels.get(pid);
+        if (models != null) {
             return models;
         }
-        models =  connector.getContentModels(pid);
-        contentModels.put(pid,models);
+        models = connector.getContentModels(pid);
+        contentModels.put(pid, models);
         return models;
 
     }
@@ -249,14 +248,13 @@ public class CachingConnector implements FedoraConnector{
                                                             InvalidCredentialsException {
         cmpid = FedoraUtil.ensureURI(cmpid);
         PidList descendants = inheritingContentModels.get(cmpid);
-        if (descendants != null){
+        if (descendants != null) {
             return descendants;
         }
-        descendants =  connector.getInheritingContentModels(cmpid);
-        inheritingContentModels.put(cmpid,descendants);
+        descendants = connector.getInheritingContentModels(cmpid);
+        inheritingContentModels.put(cmpid, descendants);
         return descendants;
     }
-
 
 
     public PidList getInheritedContentModels(String cmpid) throws
@@ -268,11 +266,11 @@ public class CachingConnector implements FedoraConnector{
 
         cmpid = FedoraUtil.ensureURI(cmpid);
         PidList descendants = inheritedContentModels.get(cmpid);
-        if (descendants != null){
+        if (descendants != null) {
             return descendants;
         }
-        descendants =  connector.getInheritedContentModels(cmpid);
-        inheritedContentModels.put(cmpid,descendants);
+        descendants = connector.getInheritedContentModels(cmpid);
+        inheritedContentModels.put(cmpid, descendants);
         return descendants;
     }
 
