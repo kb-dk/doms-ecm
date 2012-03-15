@@ -17,8 +17,9 @@
             <artifactId>fcrepo-client-admin</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.fcrepo</groupId>
-            <artifactId>fcrepo-server</artifactId>
+            <groupId>net.sourceforge.saxon</groupId>
+            <artifactId>saxon</artifactId>
+            <classifier>dom</classifier>
         </dependency>
     </dependencies>
 

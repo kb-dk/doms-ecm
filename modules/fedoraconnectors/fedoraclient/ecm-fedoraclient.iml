@@ -8,7 +8,6 @@
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -78,8 +77,6 @@
     <orderEntry type="library" name="Maven: wsdl4j:wsdl4j:1.5.1" level="project" />
     <orderEntry type="library" name="Maven: org.fcrepo:jakarta-oro:2.0.5" level="project" />
     <orderEntry type="library" name="Maven: org.fcrepo:one-jar-boot:0.96" level="project" />
-    <orderEntry type="library" name="Maven: org.fcrepo:saxon:9.0" level="project" />
-    <orderEntry type="library" name="Maven: org.fcrepo:saxon-dom:9.0" level="project" />
     <orderEntry type="library" name="Maven: org.fcrepo:trippi-core:1.4.3" level="project" />
     <orderEntry type="library" name="Maven: org.fcrepo:mulgara-core:2.1.4" level="project" />
     <orderEntry type="library" name="Maven: com.hp.hpl.jena:iri:0.5" level="project" />
@@ -159,6 +156,7 @@
     <orderEntry type="library" name="Maven: org.fcrepo:jai_core:1.1.2_01" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.16" level="project" />
     <orderEntry type="library" name="Maven: org.fcrepo:openrdf-sesame-onejar:2.2.1" level="project" />
+    <orderEntry type="library" name="Maven: net.sourceforge.saxon:saxon:dom:9.1.0.8" level="project" />
     <orderEntry type="module" module-name="ecm-repository" />
     <orderEntry type="library" name="Maven: dk.statsbiblioteket.doms.pidgenerator:pidgenerator-interface:0.0.8" level="project" />
     <orderEntry type="library" name="Maven: dk.statsbiblioteket.sbutil:sbutil:0.5.2" level="project" />

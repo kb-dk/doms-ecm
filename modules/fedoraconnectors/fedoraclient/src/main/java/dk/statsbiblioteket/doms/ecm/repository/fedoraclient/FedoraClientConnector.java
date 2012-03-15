@@ -340,17 +340,6 @@ public class FedoraClientConnector
         return getInheritedContentModelsBreadthFirst(new PidList(cmpid));
     }
 
-    public boolean authenticate() throws FedoraConnectionException {
-
-        try {
-            getFedoraClient().getAPIA().describeRepository();
-        } catch (ServiceException e) {
-            return false;
-        } catch (IOException e) {
-            throw new FedoraConnectionException("Fedora exception encountered", e);
-        }
-        return true;
-    }
 
     public String getUser() {
         return token.getUsername();
