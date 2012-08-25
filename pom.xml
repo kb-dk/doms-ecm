@@ -48,11 +48,11 @@
 
 
     <modules>
-        <module>modules/fedoraconnectors</module>
-        <module>modules/fedoravalidatorhook</module>
-        <module>modules/repository</module>
-        <module>modules/services</module>
-        <module>modules/webservice</module>
+        <module>fedoraconnectors</module>
+        <module>fedoravalidatorhook</module>
+        <module>repository</module>
+        <module>services</module>
+        <module>webservice</module>
     </modules>
 
     <dependencyManagement>
