@@ -402,7 +402,7 @@ public class FedoraClientConnector
             InvalidCredentialsException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
-            DocumentUtils.DOCUMENT_TRANSFORMER.transform(new DOMSource(document),
+            DocumentUtils.getDOCUMENT_TRANSFORMER().transform(new DOMSource(document),
                                                          new StreamResult(
                                                                  byteArrayOutputStream));
         } catch (TransformerException e) {
@@ -529,8 +529,9 @@ public class FedoraClientConnector
 
         Document dsCompositeXml;
         try {
-            dsCompositeXml = DocumentUtils.DOCUMENT_BUILDER.parse(new ByteArrayInputStream(
-                    buf));
+
+            dsCompositeXml = DocumentUtils.getDOCUMENT_BUILDER().parse(
+                    new ByteArrayInputStream(buf));
         } catch (SAXException e) {
             throw new FedoraIllegalContentException(
                     "Error parsing datastream '" + datastream + "'  from '" + pid + "' as XML",
