@@ -24,25 +24,23 @@ import java.io.StringWriter;
 public class DocumentUtils {
 
     /** A default document builder, namespace aware. */
-    public static final DocumentBuilder DOCUMENT_BUILDER;
-    static {
+    public static DocumentBuilder getDocumentBuilder() {
         try {
             DocumentBuilderFactory documentBuilderFactory
                     = DocumentBuilderFactory
                     .newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DOCUMENT_BUILDER = documentBuilderFactory.newDocumentBuilder();
+            return documentBuilderFactory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
             throw new Error("Error initialising default document builder", e);
         }
     }
 
     /** A default document transformer. */
-    public static final Transformer DOCUMENT_TRANSFORMER;
-    static {
+
+    public static Transformer getDocumentTransformer() {
         try {
-            DOCUMENT_TRANSFORMER
-                    = TransformerFactory.newInstance().newTransformer();
+           return TransformerFactory.newInstance().newTransformer();
         } catch (TransformerConfigurationException e) {
             throw new Error("Error initialising default document transformer",
                             e);
@@ -61,7 +59,7 @@ public class DocumentUtils {
             throws TransformerException {
 
         StringWriter writer = new StringWriter();
-        DOCUMENT_TRANSFORMER.transform(new DOMSource(doc), new StreamResult(writer) );
+        getDocumentTransformer().transform(new DOMSource(doc), new StreamResult(writer) );
         return writer.toString();
     }
 
@@ -75,7 +73,7 @@ public class DocumentUtils {
             throws SAXException {
         InputStream in = new ByteArrayInputStream(doc.getBytes());
         try {
-            return DOCUMENT_BUILDER.parse(in);
+            return getDocumentBuilder().parse(in);
         } catch (IOException e) {
             throw new Error("Problem reading a string, should never happen",e);
         }

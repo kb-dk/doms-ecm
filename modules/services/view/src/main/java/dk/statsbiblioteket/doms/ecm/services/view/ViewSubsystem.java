@@ -251,7 +251,7 @@ public class ViewSubsystem {
 
         PidList pidlist = getViewObjectsListForObject(objpid, viewAngle, fedoraConnector);
 
-        Document doc = DocumentUtils.DOCUMENT_BUILDER.newDocument();
+        Document doc = DocumentUtils.getDocumentBuilder().newDocument();
 
         //There is no document element per default, so we make one
         doc.appendChild(

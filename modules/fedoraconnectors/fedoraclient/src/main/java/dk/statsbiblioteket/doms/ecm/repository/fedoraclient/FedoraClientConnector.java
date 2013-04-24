@@ -402,7 +402,7 @@ public class FedoraClientConnector
             InvalidCredentialsException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
-            DocumentUtils.DOCUMENT_TRANSFORMER.transform(new DOMSource(document),
+            DocumentUtils.getDocumentTransformer().transform(new DOMSource(document),
                                                          new StreamResult(
                                                                  byteArrayOutputStream));
         } catch (TransformerException e) {
@@ -529,7 +529,7 @@ public class FedoraClientConnector
 
         Document dsCompositeXml;
         try {
-            dsCompositeXml = DocumentUtils.DOCUMENT_BUILDER.parse(new ByteArrayInputStream(
+            dsCompositeXml = DocumentUtils.getDocumentBuilder().parse(new ByteArrayInputStream(
                     buf));
         } catch (SAXException e) {
             throw new FedoraIllegalContentException(
