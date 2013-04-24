@@ -6,6 +6,8 @@
         <groupId>dk.statsbiblioteket.doms.ecm</groupId>
         <artifactId>ecm-services</artifactId>
         <version>0.0.18-SNAPSHOT</version>
+        <relativePath>../</relativePath>
+
     </parent>
 
     <artifactId>ecm-templates</artifactId>
