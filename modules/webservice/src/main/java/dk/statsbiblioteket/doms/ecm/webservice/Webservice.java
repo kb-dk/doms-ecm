@@ -48,10 +48,9 @@ public class Webservice {
             = LogFactory.getLog(Webservice.class);
 
 
-    private ViewSubsystem view;
-    private TemplateSubsystem temps;
+    private final ViewSubsystem view;
+    private final TemplateSubsystem temps;
     private FedoraConnector fedoraConnector;
-    private PidGenerator pidGenerator;
 
     private boolean initialised = false;
 
@@ -61,35 +60,37 @@ public class Webservice {
     public Webservice() {
         view = new ViewSubsystem();
         temps = new TemplateSubsystem();
+    }
+
+    private synchronized PidGenerator initialisePidGenerator(){
 
         //read the config protoperties from ConfigCollection and initialise pidGenerator
         String pidgeneratorclassString = ConfigCollection.getProperties()
                 .getProperty("dk.statsbiblioteket.doms.ecm.pidGenerator.client");
+        log.debug("pid generator class is "+pidgeneratorclassString);
         try {
             Class<?> pidgeneratorClass = Class.forName(pidgeneratorclassString);
             if (PidGenerator.class.isAssignableFrom(pidgeneratorClass)) {
                 try {
-                    pidGenerator = (PidGenerator) pidgeneratorClass.newInstance();
+                    return (PidGenerator) pidgeneratorClass.newInstance();
                 } catch (InstantiationException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    throw new RuntimeException(e);
                 } catch (IllegalAccessException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    throw new RuntimeException(e);
                 }
             } else {//Class not implementing the correct interface
-
+                throw new RuntimeException("Specified pid generator class does not implement the correct interface");
             }
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            throw new RuntimeException(e);
         }
-        //TODO bomb if pidgenerator cannot be made
+
     }
 
     private synchronized void initialise() throws InitialisationException {
-/*
         if (initialised){
             return;
         }
-*/
         String fedoraserverurl =
                 ConfigCollection.getProperties().getProperty("dk.statsbiblioteket.doms.ecm.fedora.location");
         String fedoraconnectorclassstring =
@@ -152,7 +153,7 @@ public class Webservice {
             @QueryParam("oldID") List<String> oldIDs,
             @QueryParam("logMessage") String logMessage) throws EcmException {
         initialise();
-        return temps.cloneTemplate(templatepid, oldIDs, logMessage, fedoraConnector, pidGenerator);
+        return temps.cloneTemplate(templatepid, oldIDs, logMessage, fedoraConnector, initialisePidGenerator());
     }
 
 
