@@ -16,11 +16,25 @@
         <dependency>
             <groupId>org.fcrepo</groupId>
             <artifactId>fcrepo-client-admin</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun.xml.stream</groupId>
+                    <artifactId>sjsxp</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+<!--
         <dependency>
             <groupId>org.fcrepo</groupId>
             <artifactId>fcrepo-server</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun.xml.stream</groupId>
+                    <artifactId>sjsxp</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+-->
     </dependencies>
 
 
