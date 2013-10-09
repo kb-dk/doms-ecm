@@ -7,7 +7,6 @@ import dk.statsbiblioteket.doms.ecm.repository.exceptions.*;
 import dk.statsbiblioteket.doms.ecm.repository.utils.Constants;
 import dk.statsbiblioteket.doms.ecm.repository.utils.DocumentUtils;
 import dk.statsbiblioteket.doms.ecm.repository.utils.FedoraUtil;
-import org.apache.axis.AxisFault;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.fcrepo.client.FedoraClient;
@@ -72,29 +71,7 @@ public class FedoraClientConnector
                    FedoraIllegalContentException, InvalidCredentialsException {
         from = FedoraUtil.ensureURI(from);
         to = FedoraUtil.ensureURI(to);
-        try {
-            return getAPIM().addRelationship(from, relation, to, false, null);
-        } catch (RemoteException e) {
-            if (e instanceof AxisFault) {
-                AxisFault axisFault = (AxisFault) e;
-                if (axisFault.getCause() instanceof AuthzException) {
-                    AuthzException authzException
-                            = (AuthzException) axisFault.getCause();
-                    throw new InvalidCredentialsException(
-                            "The supplied credentials were insufficient for the"
-                            + " task at hand", authzException);
-                }
-                if (axisFault.getCause() instanceof LowlevelStorageException) {
-                    LowlevelStorageException lowlevelStorageException
-                            = (LowlevelStorageException) axisFault.getCause();
-                    throw new ObjectNotFoundException("The object '" + from + "' was not found", axisFault.getCause());
-                }
-
-            }
-            throw new FedoraConnectionException(
-                    "Something went wrong in the connection with fedora",
-                    e);
-        }
+        return getAPIM().addRelationship(from, relation, to, false, null);
     }
 
     public boolean addLiteralRelation(String from,
@@ -106,32 +83,11 @@ public class FedoraClientConnector
         from = FedoraUtil.ensureURI(from);
 
 
-        try {
-            return getAPIM().addRelationship(from,
-                                             relation,
-                                             value,
-                                             true,
-                                             datatype);
-        } catch (RemoteException e) {
-            if (e instanceof AxisFault) {
-                AxisFault axisFault = (AxisFault) e;
-                if (axisFault.getCause() instanceof AuthzException) {
-                    AuthzException authzException
-                            = (AuthzException) axisFault.getCause();
-                    throw new InvalidCredentialsException(
-                            "The supplied credentials were insufficient for the"
-                            + " task at hand", authzException);
-                }
-                if (axisFault.getCause() instanceof LowlevelStorageException) {
-                    LowlevelStorageException lowlevelStorageException
-                            = (LowlevelStorageException) axisFault.getCause();
-                    throw new ObjectNotFoundException("The object '" + from + "' was not found", axisFault.getCause());
-                }
-            }
-            throw new FedoraConnectionException(
-                    "Something went wrong in the connection with fedora",
-                    e);
-        }
+        return getAPIM().addRelationship(from,
+                                         relation,
+                                         value,
+                                         true,
+                                         datatype);
     }
 
     public List<Relation> getRelations(String pid)
@@ -144,39 +100,17 @@ public class FedoraClientConnector
             throws ObjectNotFoundException, FedoraConnectionException,
                    FedoraIllegalContentException, InvalidCredentialsException {
         pid = FedoraUtil.ensureURI(pid);
-        try {
-            RelationshipTuple[] relations = getAPIM().getRelationships(pid,
-                                                                       relation);
-            List<Relation> result = new ArrayList<Relation>();
-            if (relations != null) {
+        List<RelationshipTuple> relations = getAPIM().getRelationships(pid,
+                                                                   relation);
+        List<Relation> result = new ArrayList<Relation>();
+        if (relations != null) {
 
-                for (RelationshipTuple rel : relations) {
-                    result.add(toRelation(rel));
-                }
+            for (RelationshipTuple rel : relations) {
+                result.add(toRelation(rel));
+            }
 
-            }
-            return result;
-        } catch (RemoteException e) {
-            if (e instanceof AxisFault) {
-                AxisFault axisFault = (AxisFault) e;
-                if (axisFault.getCause() instanceof AuthzException) {
-                    AuthzException authzException
-                            = (AuthzException) axisFault.getCause();
-                    throw new InvalidCredentialsException(
-                            "The supplied credentials were insufficient for the"
-                            + " task at hand", authzException);
-                }
-                if (axisFault.getCause() instanceof LowlevelStorageException) {
-                    LowlevelStorageException lowlevelStorageException
-                            = (LowlevelStorageException) axisFault.getCause();
-                    throw new ObjectNotFoundException("The object '" + pid + "' was not found", axisFault.getCause());
-                }
-            }
-            throw new FedoraConnectionException(
-                    "Something failed in the communication with Fedora",
-                    e);
         }
-
+        return result;
     }
 
     private Relation toRelation(RelationshipTuple rel) {
@@ -192,34 +126,10 @@ public class FedoraClientConnector
         pid = FedoraUtil.ensurePID(pid);
 
         ObjectProfile profile;
-        try {
-            profile = getAPIA().getObjectProfile(pid, null);
-        } catch (RemoteException e) {
-            if (e instanceof AxisFault) {
-                AxisFault axisFault = (AxisFault) e;
-                if (axisFault.getCause() instanceof AuthzException) {
-                    AuthzException authzException
-                            = (AuthzException) axisFault.getCause();
-                    throw new InvalidCredentialsException(
-                            "The supplied credentials were insufficient for the"
-                            + " task at hand", authzException);
-                }
-                if (axisFault.getCause() instanceof LowlevelStorageException) {
-                    LowlevelStorageException lowlevelStorageException
-                            = (LowlevelStorageException) axisFault.getCause();
-                    throw new ObjectNotFoundException("The object '" + pid + "' was not found",
-                                                      lowlevelStorageException);
-                }
+        profile = getAPIA().getObjectProfile(pid, null);
 
-            }
-            throw new FedoraConnectionException(
-                    "Failed in communication with Fedora",
-                    e);
-        }
-
-        String[] models = profile.getObjModels();
-        PidList localmodels = new PidList(Arrays.asList(models));
-        return localmodels;
+        ObjectProfile.ObjModels models = profile.getObjModels();
+        return new PidList(models.getModel());
         //TODO Do we really want to perform this breath first search? I mean, we have all the inherited content models in the objects, per definition already. 
         //return getInheritedContentModelsBreadthFirst(localmodels);
     }
@@ -362,33 +272,12 @@ public class FedoraClientConnector
                    FedoraIllegalContentException, InvalidCredentialsException {
         pid = FedoraUtil.ensurePID(pid);
 
-        try {
-            DatastreamDef[] datastreams = getAPIA().listDatastreams(pid, null);
-            List<String> result = new ArrayList<String>();
-            for (DatastreamDef def : datastreams) {
-                result.add(def.getID());
-            }
-            return result;
-        } catch (RemoteException e) {
-            if (e instanceof AxisFault) {
-                AxisFault axisFault = (AxisFault) e;
-                if (axisFault.getCause() instanceof AuthzException) {
-                    AuthzException authzException
-                            = (AuthzException) axisFault.getCause();
-                    throw new InvalidCredentialsException(
-                            "The supplied credentials were insufficient for the"
-                            + " task at hand", authzException);
-                }
-                if (axisFault.getCause() instanceof LowlevelStorageException) {
-                    LowlevelStorageException lowlevelStorageException
-                            = (LowlevelStorageException) axisFault.getCause();
-                    throw new ObjectNotFoundException("The object '" + pid + "' was not found", axisFault.getCause());
-                }
-
-            }
-            throw new FedoraConnectionException("Something failed in the " + "communication with Fedora",
-                                                e);
+        List<DatastreamDef> datastreams = getAPIA().listDatastreams(pid, null);
+        List<String> result = new ArrayList<String>();
+        for (DatastreamDef def : datastreams) {
+            result.add(def.getID());
         }
+        return result;
     }
 
     public String getUsername() {
@@ -411,25 +300,9 @@ public class FedoraClientConnector
         }
 
         //TODO check the document for all things that make the Fedora system fail
-        try {
-            return getAPIM().ingest(byteArrayOutputStream.toByteArray(),
-                                    FedoraClient.FOXML1_1.uri,
-                                    logmessage);
-        } catch (RemoteException e) {
-            if (e instanceof AxisFault) {
-                AxisFault axisFault = (AxisFault) e;
-                if (axisFault.getCause() instanceof AuthzException) {
-                    AuthzException authzException
-                            = (AuthzException) axisFault.getCause();
-                    throw new InvalidCredentialsException(
-                            "The supplied credentials were insufficient for the"
-                            + " task at hand", authzException);
-                }
-            }
-            throw new FedoraConnectionException(
-                    "The object could not be ingested",
-                    e);
-        }
+        return getAPIM().ingest(byteArrayOutputStream.toByteArray(),
+                                FedoraClient.FOXML1_1.uri,
+                                logmessage);
     }
 
     /**
@@ -446,33 +319,7 @@ public class FedoraClientConnector
 
 
         byte[] objectXML;
-        try {
-            objectXML = getAPIM().getObjectXML(pid);
-
-        } catch (RemoteException e) {
-            if (e instanceof AxisFault) {
-                AxisFault axisFault = (AxisFault) e;
-                if (axisFault.getCause() instanceof AuthzException) {
-                    AuthzException authzException
-                            = (AuthzException) axisFault.getCause();
-                    throw new InvalidCredentialsException(
-                            "The supplied credentials were insufficient for the"
-                            + " task at hand", authzException);
-                }
-                if (axisFault.getCause() instanceof LowlevelStorageException) {
-                    LowlevelStorageException lowlevelStorageException
-                            = (LowlevelStorageException) axisFault.getCause();
-                    throw new ObjectNotFoundException("The object '" + pid + "' was not found",
-                                                      lowlevelStorageException);
-                }
-
-            }
-            throw new FedoraConnectionException("Error getting XML for '" + pid + "' from Fedora",
-                                                e);
-        } catch (IOException e) {
-            throw new FedoraConnectionException("Error getting XML for '" + pid + "' from Fedora",
-                                                e);
-        }
+        objectXML = getAPIM().getObjectXML(pid);
         String result = new String(objectXML);
         return result;
     }
@@ -494,38 +341,9 @@ public class FedoraClientConnector
 
         MIMETypedStream dsCompositeDatastream;
         byte[] buf;
-        try {
-            dsCompositeDatastream = getAPIA()
-                    .getDatastreamDissemination(pid, datastream, null);
-            buf = dsCompositeDatastream.getStream();
-        } catch (RemoteException e) {
-            if (e instanceof AxisFault) {
-                AxisFault axisFault = (AxisFault) e;
-                if (axisFault.getCause() instanceof AuthzException) {
-                    AuthzException authzException
-                            = (AuthzException) axisFault.getCause();
-                    throw new InvalidCredentialsException(
-                            "The supplied credentials were insufficient for the"
-                            + " task at hand", authzException);
-                }
-                if (axisFault.getCause() instanceof LowlevelStorageException) {
-                    LowlevelStorageException lowlevelStorageException
-                            = (LowlevelStorageException) axisFault.getCause();
-                    throw new ObjectNotFoundException("The object '" + pid + "' was not found", axisFault.getCause());
-                }
-
-            }
-            if (e.getMessage().contains(
-                    "DatastreamNotFoundException")) {
-
-                throw new DatastreamNotFoundException(
-                        "Error getting datastream'" + datastream + "' from '" + pid + "'",
-                        e);
-
-            }
-            throw new FedoraConnectionException("Error getting datastream'" + datastream + "' from '" + pid + "'",
-                                                e);
-        }
+        dsCompositeDatastream = getAPIA()
+                .getDatastreamDissemination(pid, datastream, null);
+        buf = dsCompositeDatastream.getStream();
 
         Document dsCompositeXml;
         try {
