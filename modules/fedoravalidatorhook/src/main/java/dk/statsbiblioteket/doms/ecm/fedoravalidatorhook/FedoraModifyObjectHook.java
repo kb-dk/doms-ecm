@@ -1,6 +1,7 @@
 package dk.statsbiblioteket.doms.ecm.fedoravalidatorhook;
 
 
+import org.fcrepo.utilities.DateUtility;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -13,7 +14,6 @@ import org.fcrepo.server.management.Management;
 import org.fcrepo.server.management.ManagementModule;
 import org.fcrepo.server.Server;
 import org.fcrepo.server.Context;
-import org.fcrepo.server.utilities.DateUtility;
 import static org.fcrepo.server.utilities.StreamUtility.enc;
 import org.fcrepo.server.rest.DefaultSerializer;
 import org.fcrepo.server.storage.types.Validation;
