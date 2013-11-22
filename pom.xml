@@ -35,7 +35,7 @@
 
     <groupId>dk.statsbiblioteket.doms.ecm</groupId>
     <artifactId>ecm</artifactId>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
     <name>ECM project</name>
 
     <packaging>pom</packaging>
