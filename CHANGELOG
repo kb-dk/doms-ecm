@@ -1,0 +1,4 @@
+1.0
+
+Use newer pid generator
+Hopefully fixed the saxon parse race condition
