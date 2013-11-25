@@ -48,11 +48,11 @@
 
 
     <modules>
-        <module>fedoraconnectors</module>
-        <module>fedoravalidatorhook</module>
-        <module>repository</module>
-        <module>services</module>
-        <module>webservice</module>
+        <module>ecm-fedoraconnectors</module>
+        <module>ecm-fedoravalidatorhook</module>
+        <module>ecm-repository</module>
+        <module>ecm-services</module>
+        <module>ecm-service</module>
     </modules>
 
     <dependencyManagement>
