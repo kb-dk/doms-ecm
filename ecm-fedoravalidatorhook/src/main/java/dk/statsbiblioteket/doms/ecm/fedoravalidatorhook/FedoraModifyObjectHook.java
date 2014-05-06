@@ -1,45 +1,30 @@
 package dk.statsbiblioteket.doms.ecm.fedoravalidatorhook;
 
 
-import org.fcrepo.utilities.DateUtility;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.fcrepo.server.proxy.AbstractInvocationHandler;
+import org.fcrepo.common.Constants;
+import org.fcrepo.server.Context;
+import org.fcrepo.server.Server;
+import org.fcrepo.server.errors.ModuleInitializationException;
+import org.fcrepo.server.errors.ObjectValidityException;
+import org.fcrepo.server.errors.ServerInitializationException;
 import org.fcrepo.server.management.Management;
 import org.fcrepo.server.management.ManagementModule;
-import org.fcrepo.server.Server;
-import org.fcrepo.server.Context;
-import static org.fcrepo.server.utilities.StreamUtility.enc;
-import org.fcrepo.server.rest.DefaultSerializer;
+import org.fcrepo.server.proxy.AbstractInvocationHandler;
 import org.fcrepo.server.storage.types.Validation;
-import org.fcrepo.server.errors.ServerInitializationException;
-import org.fcrepo.server.errors.ModuleInitializationException;
-import org.fcrepo.common.Constants;
+import org.fcrepo.utilities.DateUtility;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
-import java.net.URL;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Date;
+
+import static org.fcrepo.server.utilities.StreamUtility.enc;
 
 
 /**
@@ -143,9 +128,7 @@ public class FedoraModifyObjectHook extends AbstractInvocationHandler {
         if (result.isValid()){
             return callMethod(method,args);
         } else {
-
-            String problems = objectValidationToXml(result);
-            throw new ValidationFailedException(null,problems,null,null,null);
+            throw new ObjectValidityException("Cannot set object '"+pid+"' to Active due to validation",result);
         }
 
     }
