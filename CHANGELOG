@@ -1,4 +1,6 @@
-1.0
+1.1
+Report validity errors in a way that is reported to caller.
 
+1.0
 Use newer pid generator
 Hopefully fixed the saxon parse race condition
