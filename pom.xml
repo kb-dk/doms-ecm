@@ -35,7 +35,7 @@
 
     <groupId>dk.statsbiblioteket.doms.ecm</groupId>
     <artifactId>ecm</artifactId>
-    <version>1.1</version>
+    <version>1.2-SNAPSHOT</version>
     <name>ECM project</name>
 
     <packaging>pom</packaging>
@@ -44,7 +44,7 @@
         <connection>scm:git:git://github.com/statsbiblioteket/doms-ecm.git</connection>
         <developerConnection>scm:git:git@github.com:statsbiblioteket/doms-ecm.git</developerConnection>
         <url>https://github.com/statsbiblioteket/doms-ecm</url>
-      <tag>ecm-1.1</tag>
+      <tag>HEAD</tag>
   </scm>
 
 
